@@ -21,10 +21,10 @@ export HOST_IP="$(hostname -I | cut -d ' ' -f1)"
 
 # Create the build container image and start the build container (linux)
 docker build --target monitoring-system-builder -t monitoring-system-builder . && \
+docker build --target monitoring-system -t monitoring-system . && \
 docker run --user root -it --rm --net="${PROJECT}" --name "${PROJECT}-builder" \
   -e PROJECT \
   -e HOST_PWD="${WORKDIR}" \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v "${WORKDIR}":/src \
-  -v /tmp:/tmp \
   monitoring-system-builder "$@"

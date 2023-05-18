@@ -12,7 +12,7 @@ class CeleryConfig:
     task_track_started = True
     task_create_missing_queues = True
 
-    result_backend = "db+postgresql://guest:guest@postgres:5432/monitoring_system_celery"
+    result_backend = "redis://redis:6379/0"
 
     imports = ("monitoring_system.tasks.tasks",)
     broker_transport_options = {

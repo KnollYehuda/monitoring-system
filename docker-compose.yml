@@ -46,19 +46,25 @@ services:
 
   file-generator-worker:
     image: monitoring-system
+    build:
+      target: monitoring-system
     depends_on:
       - rabbitmq
       - redis
       - postgres
     container_name: file-generator-worker
+    volumes:
+      - /tmp:/tmp
     environment:
-      METHOD: worker
+      METHOD: file-generator-worker
     restart: on-failure
     networks:
       - "${PROJECT}"
 
   celery-beat:
     image: monitoring-system
+    build:
+      target: monitoring-system
     depends_on:
       - rabbitmq
       - redis

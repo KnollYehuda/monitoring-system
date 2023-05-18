@@ -3,7 +3,8 @@
 
 case $METHOD in
 
-worker)
+file-generator-worker)
+  mkdir -p /tmp/celery
   exec celery \
     --app=monitoring_system.tasks.celery_utils:celery_app \
     worker \
