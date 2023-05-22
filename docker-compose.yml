@@ -102,9 +102,25 @@ services:
       - redis
       - postgres
       - file-generator-worker
+      - backup-tasks-to-db
+      - redis-setter-worker
     container_name: celery-beat
     environment:
       METHOD: beat
+    restart: on-failure
+    networks:
+      - "${PROJECT}"
+
+  flower:
+    image: mher/flower:1.2
+    depends_on:
+      - rabbitmq
+      - redis
+    ports:
+      - "5555:5555"
+    container_name: flower
+    environment:
+      CELERY_BROKER_URL: "pyamqp://guest:guest@rabbitmq:5672//"
     restart: on-failure
     networks:
       - "${PROJECT}"
