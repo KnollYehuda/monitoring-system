@@ -26,6 +26,8 @@ class CeleryConfig:
 
 
 def init_celery_app() -> Celery:
+    """Initialize the celery app"""
+
     current_celery_app = Celery()
     current_celery_app.config_from_object(CeleryConfig())
     return current_celery_app
@@ -36,6 +38,8 @@ celery_app = init_celery_app()
 
 # celery beat app
 celery_beat_app = init_celery_app()
+
+# update celery-beat configuration
 celery_beat_app.conf.update(
     {
         "CELERYBEAT_SCHEDULE": {

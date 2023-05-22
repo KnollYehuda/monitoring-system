@@ -8,4 +8,6 @@ conn = db.connect()
 
 
 def session_maker():
-    return sessionmaker(db)
+    """Create a database connection session"""
+    session = sessionmaker(db)
+    return session()

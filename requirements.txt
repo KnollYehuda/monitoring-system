@@ -9,3 +9,5 @@ flake8==3.7.9
 mypy==0.800
 isort==5.10.1
 sqlalchemy==2.0.9
+beautifulsoup4==4.12.2
+requests==2.30.0
