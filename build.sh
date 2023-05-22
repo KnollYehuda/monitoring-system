@@ -16,8 +16,6 @@ fi
 
 [[ -z "${WORKDIR}" ]] && WORKDIR="${PWD}" || WORKDIR="${WORKDIR}"
 
-# Extract the host IP
-export HOST_IP="$(hostname -I | cut -d ' ' -f1)"
 export TIME_OUT="${TIME_OUT:=60}"
 
 # Create the build container image and start the build container (linux)
