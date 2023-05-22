@@ -1,13 +1,4 @@
-from sqlalchemy import (
-    Boolean,
-    Column,
-    Enum,
-    Integer,
-    MetaData,
-    String,
-    Table,
-    create_engine,
-)
+from sqlalchemy import Column, Enum, Integer, MetaData, String, Table, create_engine
 
 engine = create_engine("db+postgresql://guest:guest@postgres:5432/")
 conn = engine.connect()
