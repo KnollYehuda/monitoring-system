@@ -1,0 +1,5 @@
+# This file is an example. Do not use in production.
+scrape_configs:
+  - job_name: "flower"
+    static_configs:
+      - targets: [ 'flower:5555' ]

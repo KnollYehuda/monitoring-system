@@ -70,7 +70,6 @@ services:
     depends_on:
       - rabbitmq
       - redis
-      - postgres
     container_name: redis-setter-worker
     environment:
       METHOD: redis-setter
@@ -121,6 +120,40 @@ services:
     container_name: flower
     environment:
       CELERY_BROKER_URL: "pyamqp://guest:guest@rabbitmq:5672//"
+    restart: on-failure
+    networks:
+      - "${PROJECT}"
+
+  grafana:
+    image: grafana/grafana:main-ubuntu
+    depends_on:
+      - rabbitmq
+      - redis
+      - postgres
+      - prometheus
+    ports:
+      - "3000:3000"
+    volumes:
+      - ${HOST_PWD}/monitoring_system/grafana/dashboards:/var/lib/grafana/dashboards
+      - ${HOST_PWD}/monitoring_system/grafana/provisioning/dashboards/all.yml:/etc/grafana/provisioning/dashboards/all.yml
+      - ${HOST_PWD}/monitoring_system/grafana/provisioning/datasources/all.yml:/etc/grafana/provisioning/datasources/all.yml
+    container_name: grafana
+    restart: on-failure
+    networks:
+      - "${PROJECT}"
+
+  prometheus:
+    image: prom/prometheus:main
+    depends_on:
+      - flower
+    ports:
+      - "9090:9090"
+    volumes:
+      - ${HOST_PWD}/monitoring_system/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    entrypoint:
+      - "/bin/prometheus"
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    container_name: prometheus
     restart: on-failure
     networks:
       - "${PROJECT}"

@@ -22,9 +22,6 @@ RUN apt-get update \
 COPY requirements.txt /requirements.txt
 RUN pip install -r requirements.txt
 
-# using docker from the builder container
-RUN mkdir -m777 -p ${IBEX_OUTPUT} /.docker
-
 WORKDIR /src
 CMD ["/bin/bash"]
 
