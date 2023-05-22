@@ -36,5 +36,5 @@ def redis_setter() -> None:
     max_retries=5,
 )
 def backup_tasks_to_db() -> None:
-    with session_maker() as session:
+    with session_maker()() as session:
         print(session.query(Task).all())

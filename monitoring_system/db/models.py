@@ -1,10 +1,13 @@
 from datetime import datetime
+from typing import Any
 
 from sqlalchemy import Column, DateTime, Enum, Integer, String
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import declarative_base
+
+Base: Any = declarative_base()
 
 
-class Task(DeclarativeBase):
+class Task(Base):
     __tablename__ = "tasks"
 
     id = Column("id", Integer(), primary_key=True)
