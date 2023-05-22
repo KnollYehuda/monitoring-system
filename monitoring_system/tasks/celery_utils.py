@@ -36,12 +36,14 @@ celery_app = init_celery_app()
 
 # celery beat app
 celery_beat_app = init_celery_app()
-celery_beat_app.conf.update({"CELERYBEAT_SCHEDULE": {
-    "files_generator": {
-        "task": "files_generator",
-        "options": {
-            "queue": "file_generator_queue"
-        },
-        "schedule": 15.0
+celery_beat_app.conf.update(
+    {
+        "CELERYBEAT_SCHEDULE": {
+            "files_generator": {
+                "task": "files_generator",
+                "options": {"queue": "file_generator_queue"},
+                "schedule": 15.0,
+            }
+        }
     }
-}})
+)
