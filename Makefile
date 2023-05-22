@@ -1,4 +1,4 @@
-all: static image
+all: static start
 
 ## format: auto format the code
 format:
@@ -16,9 +16,18 @@ flake8: format
 type-check: format
 	mypy --ignore-missing-imports --cache-dir=./build/.mypy_cache -p monitoring_system
 
+start:
+	make up
+	make down
+
 ## image: build the monitoring-system image
 up:
-	docker build --target monitoring-system -t monitoring-system .
+	docker compose up -d
+	echo "sleeping for $(TIME_OUT) ..."
+	sleep $(TIME_OUT)
+
+down:
+	docker compose down
 
 ## help: show makefile actions
 help: Makefile
