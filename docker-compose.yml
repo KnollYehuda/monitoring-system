@@ -51,12 +51,26 @@ services:
     depends_on:
       - rabbitmq
       - redis
-      - postgres
     container_name: file-generator-worker
     volumes:
       - /tmp:/tmp
     environment:
       METHOD: file-generator-worker
+    restart: on-failure
+    networks:
+      - "${PROJECT}"
+
+  redis-setter-worker:
+    image: monitoring-system
+    build:
+      target: monitoring-system
+    depends_on:
+      - rabbitmq
+      - redis
+      - postgres
+    container_name: redis-setter-worker
+    environment:
+      METHOD: redis-setter
     restart: on-failure
     networks:
       - "${PROJECT}"

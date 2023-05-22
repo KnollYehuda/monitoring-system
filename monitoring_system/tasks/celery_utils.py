@@ -43,7 +43,12 @@ celery_beat_app.conf.update(
                 "task": "files_generator",
                 "options": {"queue": "file_generator_queue"},
                 "schedule": 15.0,
-            }
+            },
+            "redis_setter": {
+                "task": "redis_setter",
+                "options": {"queue": "redis_setter_queue"},
+                "schedule": 5.0,
+            },
         }
     }
 )
