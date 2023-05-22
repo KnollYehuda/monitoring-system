@@ -4,7 +4,6 @@
 case $METHOD in
 
 file-generator-worker)
-  mkdir -p /tmp/celery
   exec celery \
     --app=monitoring_system.tasks.celery_utils:celery_app \
     worker \
@@ -24,6 +23,17 @@ redis-setter)
     --autoscale=8,1 \
     --concurrency=8 \
     -Q redis_setter_queue
+;;
+
+backup-tasks-to-db)
+  exec celery \
+    --app=monitoring_system.tasks.celery_utils:celery_app \
+    worker \
+    --loglevel=INFO \
+    --hostname=backup_tasks_to_db_worker@%h \
+    --autoscale=8,1 \
+    --concurrency=8 \
+    -Q backup_tasks_to_db_queue
 ;;
 
 beat)

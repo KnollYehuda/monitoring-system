@@ -15,6 +15,7 @@ flake8: format
 ## type-check: run mypy type checks
 type-check: format
 	mypy --ignore-missing-imports --cache-dir=./build/.mypy_cache -p monitoring_system
+	chown -R 1000:1000 ./monitoring_system/*
 
 start:
 	make up
@@ -22,12 +23,14 @@ start:
 
 ## image: build the monitoring-system image
 up:
+	mkdir -p /tmp/monitoring_system/celery
 	docker compose up -d
 	echo "sleeping for $(TIME_OUT) ..."
 	sleep $(TIME_OUT)
 
 down:
 	docker compose down
+	rm -r /tmp/monitoring_system/celery
 
 ## help: show makefile actions
 help: Makefile

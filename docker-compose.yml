@@ -26,6 +26,8 @@ services:
     environment:
       POSTGRES_USER: guest
       POSTGRES_PASSWORD: guest
+    volumes:
+      - ${HOST_PWD}/monitoring_system/db/init-database.sh:/docker-entrypoint-initdb.d/init-database.sh
     networks:
       - "${PROJECT}"
 
@@ -56,6 +58,7 @@ services:
       - /tmp:/tmp
     environment:
       METHOD: file-generator-worker
+      CELERY_DIR: /tmp/monitoring_system/celery
     restart: on-failure
     networks:
       - "${PROJECT}"
@@ -71,6 +74,21 @@ services:
     container_name: redis-setter-worker
     environment:
       METHOD: redis-setter
+    restart: on-failure
+    networks:
+      - "${PROJECT}"
+
+  backup-tasks-to-db:
+    image: monitoring-system
+    build:
+      target: monitoring-system
+    depends_on:
+      - rabbitmq
+      - redis
+      - postgres
+    container_name: backup-tasks-to-db-worker
+    environment:
+      METHOD: backup-tasks-to-db
     restart: on-failure
     networks:
       - "${PROJECT}"

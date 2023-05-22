@@ -27,4 +27,5 @@ docker run --user root -it --rm --net="${PROJECT}" --name "${PROJECT}-builder" \
   -e TIME_OUT \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v "${WORKDIR}":/src \
+  -v /tmp:/tmp \
   monitoring-system-builder "$@"

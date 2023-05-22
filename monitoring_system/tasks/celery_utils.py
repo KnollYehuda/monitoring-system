@@ -47,6 +47,11 @@ celery_beat_app.conf.update(
             "redis_setter": {
                 "task": "redis_setter",
                 "options": {"queue": "redis_setter_queue"},
+                "schedule": 10.0,
+            },
+            "backup_tasks_to_db": {
+                "task": "backup_tasks_to_db",
+                "options": {"queue": "backup_tasks_to_db_queue"},
                 "schedule": 5.0,
             },
         }
