@@ -25,6 +25,11 @@ start:
 up:
 	mkdir -p /tmp/monitoring_system/celery
 	docker compose up -d
+	@echo "\n== Monitoring System Services ==\n"
+	@echo "Grafana:        http://localhost:3000  (default credentials: admin/admin)"
+	@echo "Prometheus:     http://localhost:9090"
+	@echo "Celery Flower:  http://localhost:5555"
+	@echo "\n================================\n"
 	@if [ "$(TIME_OUT)" -gt 0 ]; then \
         echo "sleeping for $(TIME_OUT) ..."; \
 		sleep $(TIME_OUT); \
