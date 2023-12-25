@@ -25,8 +25,12 @@ start:
 up:
 	mkdir -p /tmp/monitoring_system/celery
 	docker compose up -d
-	echo "sleeping for $(TIME_OUT) ..."
-	sleep $(TIME_OUT)
+	@if [ "$(TIME_OUT)" -gt 0 ]; then \
+        echo "sleeping for $(TIME_OUT) ..."; \
+		sleep $(TIME_OUT); \
+    else \
+        read -p "Press any key to exit" userInput; \
+    fi
 
 down:
 	docker compose down
