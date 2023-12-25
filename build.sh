@@ -16,7 +16,7 @@ fi
 
 [[ -z "${WORKDIR}" ]] && WORKDIR="${PWD}" || WORKDIR="${WORKDIR}"
 
-export TIME_OUT="${TIME_OUT:=259200}"
+export TIME_OUT="${TIME_OUT:=0}"
 
 # Create the build container image and start the build container (linux)
 docker build --target monitoring-system-builder -t monitoring-system-builder . && \
