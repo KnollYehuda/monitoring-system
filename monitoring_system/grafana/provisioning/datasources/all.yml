@@ -2,19 +2,19 @@
 apiVersion: 1
 
 datasources:
-#  - name: images
-#    type: postgres
-#    url: postgres:5432
-#    database: monitoring_system
-#    user: guest
-#    access: proxy
-#    isDefault: true
-#    editable: true
-#    secureJsonData:
-#      password: 'guest'
-#    jsonData:
-#      sslmode: "disable"
-#      postgresVersion: 15.2
+  - name: postgres
+    type: postgres
+    url: postgres:5432
+    database: monitoring_system
+    user: guest
+    access: proxy
+    isDefault: true
+    editable: true
+    secureJsonData:
+      password: 'guest'
+    jsonData:
+      sslmode: "disable"
+      postgresVersion: 15.2
   - name: prometheus
     type: prometheus
     access: proxy
