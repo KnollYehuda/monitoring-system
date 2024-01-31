@@ -15,8 +15,21 @@ datasources:
     jsonData:
       sslmode: "disable"
       postgresVersion: 15.2
+
   - name: prometheus
     type: prometheus
     access: proxy
     url: http://prometheus:9090
     editable: false
+
+  - name: influxdb
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    jsonData:
+      version: Flux
+      organization: monitoring-system
+      defaultBucket: monitoring-system
+      tlsSkipVerify: true
+    secureJsonData:
+      token: f85f2f56-3a96-4a7f-8aa1-b699e5f9e821

@@ -7,7 +7,7 @@ set -e
 # Switch to script directory
 cd "$(dirname "$0")" || exit
 
-export PROJECT="monitoring-system"
+source env.sh
 
 # Create a docker network for the integration tests
 if [ -z "$(docker network ls --filter name=^${PROJECT}$ --format="{{ .Name }}")" ] ; then
@@ -21,7 +21,7 @@ export TIME_OUT="${TIME_OUT:=0}"
 # Create the build container image and start the build container (linux)
 docker build --target monitoring-system-builder -t monitoring-system-builder . && \
 docker build --target monitoring-system -t monitoring-system . && \
-docker run --user root -it --rm --net="${PROJECT}" --name "${PROJECT}-builder" \
+docker run --user root -it --rm --net="${PROJECT}" --env-file "${PWD}/env.sh" --name "${PROJECT}-builder" \
   -e PROJECT \
   -e HOST_PWD="${WORKDIR}" \
   -e TIME_OUT \
