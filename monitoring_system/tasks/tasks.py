@@ -43,7 +43,7 @@ def redis_setter() -> None:
     max_retries=5,
 )
 def backup_tasks_to_db() -> None:
-    soup = BeautifulSoup(requests.get("https://mako.co.il").content, "html.parser")
+    soup = BeautifulSoup(requests.get("https://cnn.com").content, "html.parser")
     with session_maker() as session:
         for img_attr in sample(soup.findAll("img"), 5):
             image_source = img_attr.get("src")
