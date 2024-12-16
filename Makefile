@@ -24,7 +24,6 @@ start:
 ## image: build the monitoring-system image
 up:
 	mkdir -p /tmp/monitoring_system/celery
-	mkdir -p /tmp/monitoring_system/influxdb
 	docker compose up -d
 	@echo "\n== Monitoring System Services ==\n"
 	@echo "Grafana:        http://localhost:3000  (default credentials: admin/admin)"
@@ -41,7 +40,6 @@ up:
 down:
 	docker compose down
 	rm -r /tmp/monitoring_system/celery
-	rm -r /tmp/monitoring_system/influxdb
 
 ## help: show makefile actions
 help: Makefile

@@ -159,3 +159,26 @@ services:
     restart: on-failure
     networks:
       - "${PROJECT}"
+  
+  node-exporter:
+    image: prom/node-exporter:v1.8.2
+    container_name: node_exporter
+    restart: on-failure
+    ports:
+      - "9100:9100"
+    networks:
+      - "${PROJECT}"
+  
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    container_name: cadvisor
+    restart: on-failure
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - "8080:8080"
+    networks:
+      - "${PROJECT}"

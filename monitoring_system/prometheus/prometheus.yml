@@ -1,5 +1,5 @@
 # This file is an example. Do not use in production.
 scrape_configs:
-  - job_name: "flower"
+  - job_name: "prometheus"
     static_configs:
-      - targets: [ 'flower:5555' ]
+      - targets: [ 'flower:5555', 'localhost:9090', 'cadvisor:8080', 'node-exporter:9100', 'nginx-exporter:9113' ]
