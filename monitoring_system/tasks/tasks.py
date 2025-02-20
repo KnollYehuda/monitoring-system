@@ -8,8 +8,8 @@ from bs4 import BeautifulSoup
 
 from monitoring_system.redis.redis_manager import RedisManager
 from monitoring_system.tasks.celery_utils import celery_app
-
-from ..consts import CELERY_DIR_PATH
+import concurrent.futures
+from ..consts import CELERY_DIR_PATH, WEBSITES
 from ..db.db_utils import session_maker
 from ..db.models import Image
 from ..utils import string_generator
@@ -43,10 +43,11 @@ def redis_setter() -> None:
     max_retries=5,
 )
 def backup_tasks_to_db() -> None:
-    soup = BeautifulSoup(requests.get("https://ynet.co.il").content, "html.parser")
-    with session_maker() as session:
-        for img_attr in sample(soup.findAll("img"), 5):
-            image_source = img_attr.get("src")
-            if image_source:
-                session.add(Image(name=basename(image_source), source=image_source))
-        session.commit()
+    for website in WEBSITES:
+        soup = BeautifulSoup(requests.get(website).content, "html.parser")
+        with session_maker() as session:
+            for img_attr in sample(soup.findAll("img"), 5):
+                image_source = img_attr.get("src")
+                if image_source:
+                    session.add(Image(name=basename(image_source), source=image_source))
+            session.commit()
