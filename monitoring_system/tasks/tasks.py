@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from os.path import basename
 from pathlib import Path
 from random import randint, sample
@@ -8,7 +9,7 @@ from bs4 import BeautifulSoup
 
 from monitoring_system.redis.redis_manager import RedisManager
 from monitoring_system.tasks.celery_utils import celery_app
-import concurrent.futures
+
 from ..consts import CELERY_DIR_PATH, WEBSITES
 from ..db.db_utils import session_maker
 from ..db.models import Image
@@ -38,16 +39,23 @@ def redis_setter() -> None:
     redis_manager.set(key=f"task_{string_generator(10)}", value=string_generator(55))
 
 
+def sample_website(website):
+    print(f"Website: {website}")
+    soup = BeautifulSoup(requests.get(website, timeout=15).content, "html.parser")
+    with session_maker() as session:
+        for img_attr in sample(soup.findAll("img"), 5):
+            image_source: str = img_attr.get("src")
+            if image_source and image_source.startswith("http"):
+                print(f"image_source: {image_source}")
+                session.add(Image(name=basename(image_source), source=image_source))
+        session.commit()
+
+
 @celery_app.task(
     name="backup_tasks_to_db",
     max_retries=5,
 )
 def backup_tasks_to_db() -> None:
     for website in WEBSITES:
-        soup = BeautifulSoup(requests.get(website).content, "html.parser")
-        with session_maker() as session:
-            for img_attr in sample(soup.findAll("img"), 5):
-                image_source = img_attr.get("src")
-                if image_source:
-                    session.add(Image(name=basename(image_source), source=image_source))
-            session.commit()
+        with ThreadPoolExecutor() as executor:
+            executor.map(sample_website, [website])

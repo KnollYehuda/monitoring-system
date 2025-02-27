@@ -56,7 +56,7 @@ celery_beat_app.conf.update(
             "backup_tasks_to_db": {
                 "task": "backup_tasks_to_db",
                 "options": {"queue": "backup_tasks_to_db_queue"},
-                "schedule": 5.0,
+                "schedule": 60,
             },
         }
     }
