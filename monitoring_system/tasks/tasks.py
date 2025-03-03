@@ -17,10 +17,10 @@ from ..utils import string_generator
 
 
 @celery_app.task(
-    name="files_generator",
+    name="store_randoms_in_file",
     max_retries=5,
 )
-def files_generator() -> None:
+def store_randoms_in_file() -> None:
     """Generate a new yaml file in CELERY_DIR_PATH"""
 
     with Path(CELERY_DIR_PATH / f"task_{randint(1000,5000)}.yaml").open("w") as f:
@@ -29,10 +29,10 @@ def files_generator() -> None:
 
 
 @celery_app.task(
-    name="redis_setter",
+    name="store_randoms_in_redis",
     max_retries=5,
 )
-def redis_setter() -> None:
+def store_randoms_in_redis() -> None:
     """Generate a key-value and insert it to redis"""
 
     redis_manager = RedisManager(host="redis")
@@ -52,10 +52,10 @@ def sample_website(website):
 
 
 @celery_app.task(
-    name="backup_tasks_to_db",
+    name="store_images_urls",
     max_retries=5,
 )
-def backup_tasks_to_db() -> None:
+def store_images_urls() -> None:
     for website in WEBSITES:
         with ThreadPoolExecutor() as executor:
             executor.map(sample_website, [website])

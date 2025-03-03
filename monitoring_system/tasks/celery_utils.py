@@ -43,19 +43,19 @@ celery_beat_app = init_celery_app()
 celery_beat_app.conf.update(
     {
         "CELERYBEAT_SCHEDULE": {
-            "files_generator": {
-                "task": "files_generator",
-                "options": {"queue": "file_generator_queue"},
+            "store_randoms_in_file": {
+                "task": "store_randoms_in_file",
+                "options": {"queue": "store_randoms_in_file_queue"},
                 "schedule": 15.0,
             },
-            "redis_setter": {
-                "task": "redis_setter",
-                "options": {"queue": "redis_setter_queue"},
+            "store_randoms_in_redis": {
+                "task": "store_randoms_in_redis",
+                "options": {"queue": "store_randoms_in_redis_queue"},
                 "schedule": 10.0,
             },
-            "backup_tasks_to_db": {
-                "task": "backup_tasks_to_db",
-                "options": {"queue": "backup_tasks_to_db_queue"},
+            "store_images_urls": {
+                "task": "store_images_urls",
+                "options": {"queue": "store_images_urls_queue"},
                 "schedule": 60,
             },
         }

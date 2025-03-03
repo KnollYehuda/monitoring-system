@@ -20,7 +20,7 @@ To stop the monitoring system, simply press any key, and the system will shut do
 
 - **Grafana:** Metrics visualization and monitoring dashboard.
 - **Prometheus:** Monitoring and alerting toolkit.
-- **Celery Workers:** Various Celery workers (file-generator-worker, redis-setter-worker, backup-tasks-to-db, celery-beat).
+- **Celery Workers:** Various Celery workers (store-randoms-in-file-worker, store-randoms-in-redis-worker, store-images-urls, celery-beat).
 - **Redis:** Key-value store and cache.
 - **PostgreSQL:** Database for storing tasks and data.
 - **RabbitMQ:** Message broker for Celery workers.

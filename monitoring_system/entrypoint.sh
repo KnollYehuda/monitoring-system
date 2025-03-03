@@ -3,37 +3,37 @@
 
 case $METHOD in
 
-file-generator-worker)
+store-randoms-in-file)
   exec celery \
     --app=monitoring_system.tasks.celery_utils:celery_app \
     worker \
     --loglevel=INFO \
-    --hostname=file_generator_worker@%h \
+    --hostname=store_randoms_in_file_worker@%h \
     --autoscale=8,1 \
     --concurrency=8 \
-    -Q file_generator_queue
+    -Q store_randoms_in_file_queue
 ;;
 
-redis-setter)
+store-randoms-in-redis)
   exec celery \
     --app=monitoring_system.tasks.celery_utils:celery_app \
     worker \
     --loglevel=INFO \
-    --hostname=redis_setter_worker@%h \
+    --hostname=store_randoms_in_redis_worker@%h \
     --autoscale=8,1 \
     --concurrency=8 \
-    -Q redis_setter_queue
+    -Q store_randoms_in_redis_queue
 ;;
 
-backup-tasks-to-db)
+store-images-urls)
   exec celery \
     --app=monitoring_system.tasks.celery_utils:celery_app \
     worker \
     --loglevel=INFO \
-    --hostname=backup_tasks_to_db_worker@%h \
+    --hostname=store_images_urls@%h \
     --autoscale=8,1 \
     --concurrency=8 \
-    -Q backup_tasks_to_db_queue
+    -Q store_images_urls_queue
 ;;
 
 beat)

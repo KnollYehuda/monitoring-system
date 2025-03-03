@@ -46,38 +46,38 @@ services:
     networks:
       - "${PROJECT}"
 
-  file-generator-worker:
+  store-randoms-in-file-worker:
     image: monitoring-system
     build:
       target: monitoring-system
     depends_on:
       - rabbitmq
       - redis
-    container_name: file-generator-worker
+    container_name: store-randoms-in-file-worker
     volumes:
       - /tmp:/tmp
     environment:
-      METHOD: file-generator-worker
+      METHOD: store-randoms-in-file
       CELERY_DIR: "${CELERY_DIR}"
     restart: on-failure
     networks:
       - "${PROJECT}"
 
-  redis-setter-worker:
+  store-randoms-in-redis-worker:
     image: monitoring-system
     build:
       target: monitoring-system
     depends_on:
       - rabbitmq
       - redis
-    container_name: redis-setter-worker
+    container_name: store-randoms-in-redis-worker
     environment:
-      METHOD: redis-setter
+      METHOD: store-randoms-in-redis
     restart: on-failure
     networks:
       - "${PROJECT}"
 
-  backup-tasks-to-db:
+  store-images-urls-worker:
     image: monitoring-system
     build:
       target: monitoring-system
@@ -85,9 +85,9 @@ services:
       - rabbitmq
       - redis
       - postgres
-    container_name: backup-tasks-to-db-worker
+    container_name: store-images-urls-worker
     environment:
-      METHOD: backup-tasks-to-db
+      METHOD: store-images-urls
     restart: on-failure
     networks:
       - "${PROJECT}"
@@ -100,9 +100,9 @@ services:
       - rabbitmq
       - redis
       - postgres
-      - file-generator-worker
-      - backup-tasks-to-db
-      - redis-setter-worker
+      - store-randoms-in-file-worker
+      - store-images-urls-worker
+      - store-randoms-in-redis-worker
     container_name: celery-beat
     environment:
       METHOD: beat
@@ -160,25 +160,3 @@ services:
     networks:
       - "${PROJECT}"
   
-  node-exporter:
-    image: prom/node-exporter:v1.8.2
-    container_name: node_exporter
-    restart: on-failure
-    ports:
-      - "9100:9100"
-    networks:
-      - "${PROJECT}"
-  
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor
-    container_name: cadvisor
-    restart: on-failure
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    ports:
-      - "8080:8080"
-    networks:
-      - "${PROJECT}"
