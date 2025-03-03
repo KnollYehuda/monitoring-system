@@ -21,7 +21,7 @@ from ..utils import string_generator
     max_retries=5,
 )
 def store_randoms_in_file() -> None:
-    """Generate a new yaml file in CELERY_DIR_PATH"""
+    """Generate a YAML file in CELERY_DIR_PATH with a random content string."""
 
     with Path(CELERY_DIR_PATH / f"task_{randint(1000,5000)}.yaml").open("w") as f:
         config = {"content": string_generator(length=55)}
@@ -33,20 +33,23 @@ def store_randoms_in_file() -> None:
     max_retries=5,
 )
 def store_randoms_in_redis() -> None:
-    """Generate a key-value and insert it to redis"""
+    """Generate a random key-value pair and store it in Redis."""
 
     redis_manager = RedisManager(host="redis")
     redis_manager.set(key=f"task_{string_generator(10)}", value=string_generator(55))
 
 
 def sample_website(website):
-    print(f"Website: {website}")
+    """Scrape a given website for image URLs and store them in the database.
+
+    :param website: The URL of the website to scrape.
+    """
+
     soup = BeautifulSoup(requests.get(website, timeout=15).content, "html.parser")
     with session_maker() as session:
         for img_attr in sample(soup.findAll("img"), 5):
             image_source: str = img_attr.get("src")
             if image_source and image_source.startswith("http"):
-                print(f"image_source: {image_source}")
                 session.add(Image(name=basename(image_source), source=image_source))
         session.commit()
 
@@ -56,6 +59,8 @@ def sample_website(website):
     max_retries=5,
 )
 def store_images_urls() -> None:
+    """Scrape multiple predefined websites for image URLs and store them in the database."""
+
     for website in WEBSITES:
         with ThreadPoolExecutor() as executor:
             executor.map(sample_website, [website])
