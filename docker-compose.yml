@@ -8,11 +8,15 @@ networks:
 services:
 
   rabbitmq:
-    image: rabbitmq:3.9.29
+    image: rabbitmq:management
     container_name: rabbitmq
     user: "${UID}:${GID}"
     restart: on-failure
     hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "15692:15692"
     environment:
       RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
       RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
